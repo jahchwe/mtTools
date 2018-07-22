@@ -22,3 +22,8 @@ Tools for use with the webMT server.
 > Concatenates final csv's into one csv. NOTE: will only concatenate csv files that start with the string "final". 
 >
 > Output csv will be placed into same directory as dataPath. 
+
+## localMT
+Coming soon...(?)
+
+### makeMT (procedural way to make the csv's for localMT studies)
