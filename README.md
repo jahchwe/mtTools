@@ -14,7 +14,7 @@ Tools for use with the webMT server.
 > Retrieves data at the given server path and saves at local destination. 
 >
 > responsePath should be specified from within the responses folder. For example, if you wanted to get the ratings from a ratings study named emotionReg, the path would be specified as **ratings/emotionReg/ratings**. You can also retrieve Screener, demo, and consent, etc.
-
+>
 > destination should be a local directory. 
 
 ### concatResponses(dataPath, outputFilename)
