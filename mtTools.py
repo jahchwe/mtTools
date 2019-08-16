@@ -46,10 +46,10 @@ if __name__ == "__main__":
             help = "Password for server. <8^)")
     parser_getData.add_argument(
             "studyPath",
-            help = "Path of responses. Needs to be csv. Include the type of study in the path. Types of studies supported: ratings, mt, decisionTask, and rc. For example, a ratings study with the name of emotionReg would be specified as ratings/emotionReg/ratings.")
+            help = "Path to study. Response file format needs to be csv. Will download all study subfolders and only 'final' files. Include the type of study in the path. Types of studies supported: ratings, mt, decisionTask, and rc. For example, a ratings study with the name of emotionReg would be specified as ratings/emotionReg/.")
     parser_getData.add_argument(
             "destination",
-            help = "Local destination path for data.")
+            help = "Local destination path for data. Will create new directory of the study name.")
     
     #for concatResponses
     parser_concat = subparsers.add_parser(

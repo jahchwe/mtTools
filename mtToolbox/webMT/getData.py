@@ -30,49 +30,56 @@ def getData(password, studyPath, destination):
         studyPath = "/".join(studyPath.split("/")[1:])
     
     study_path_server = os.path.join("responses/", studyPath)
+    study_name = studyPath.split('/')[1]
+
+    #add study name to destination
+    destination = os.path.join(os.path.expanduser(destination), study_name)
+    if not os.path.exists(destination):
+        os.mkdir(destination)
     
     #check if study exists
     try:
         ftp.cwd(study_path_server)
     except: 
-        print("\nStudy not found. Please make sure path specified includes type and specific study name. \nFor example, a ratings study with the name of emotionReg would be specified as ratings/emotionReg/ratings.\n")
+        print("\nStudy not found. Please make sure path specified includes type and specific study name. \nFor example, a ratings study with the name of emotionReg would be specified as ratings/emotionReg/.\n")
         return
     #ftp.cwd("responses/" + studyPath + "/" + response_folders[studyPath.split("/")[0]])
     
     #check if directory exists at destination location
     #if not, create
-    
-    store_path = os.path.expanduser(destination)
-    
-    if not os.path.exists(store_path):
-        os.makedirs(store_path)
         
-    #download files using stackoverflow link
-    files = ftp.nlst()
-    num_files = len(files)
+    #list folders in a study
+    folders = ftp.nlst()
+    print(folders)
+
+    for folder in folders:
+        if '.' in folder:
+            continue
     
-    files_not_downloaded = []
-    
-    for counter, file in enumerate(files):
-        filename = os.path.join(store_path, file)
-        
+        #ftp.cwd(os.path.join(study_path_server, folder))
+        ftp.cwd(folder)
+
+        #make destination folder
+        if not os.path.exists(os.path.join(destination, folder)):
+            os.mkdir(os.path.join(destination, folder))
+
+        #list files in a folder
+        files = ftp.nlst()
+
+        for file in files:
+            if "final" not in file:
+                continue
+            filename = os.path.join(destination, *[folder, file])
+            try:
+                with open(filename, "wb") as write_file:
+                    print(filename)
+                    ftp.retrbinary('RETR ' + file, write_file.write)
+
+            except:
+                pass
+        ftp.cwd('..')
         #ftp.nlst pulls some file names that aren't strings
-        
-        try: 
-            with open(filename, "wb") as write_file: 
-                ftp.retrbinary('RETR '+ file, write_file.write)
-            print("%d/%d files downloaded." % (counter + 1 - len(files_not_downloaded), num_files))
-    
-        except:
-            files_not_downloaded.append(file)
-    
-    if len(files_not_downloaded) != 0:
-        print("All files downloaded except:")
-        for file in files_not_downloaded:
-            print(file, end = ", ")
-        print("")
-    else:
-        print("All files downloaded!")
+
     
     
 
